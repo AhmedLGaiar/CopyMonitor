@@ -2,12 +2,25 @@
 <RevitAddIns>
 	<AddIn Type="Command">
 		<Name>Copy Monitor Levels</Name>
-		<Assembly>CopyMonitorLevels.dll</Assembly>
+		<Assembly>RevitLink.dll</Assembly>
 		<AddInId>
 			36FBA1B9-ED69-4F05-A634-34E76037BD49
 		</AddInId>
-		<FullClassName>CopyMonitor.CopyMonitorLevels</FullClassName>
+		<FullClassName>RevitLink.CopyMonitorLevels</FullClassName>
 		<Text>Copy Monitor</Text>
+		<Description>Get Column From Revit</Description>
+		<VendorId>ITI</VendorId>
+		<VendorDescription>@ITI</VendorDescription>
+		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
+	</AddIn>
+	<AddIn Type="Command">
+		<Name>Apply Half tone</Name>
+		<Assembly>RevitLink.dll</Assembly>
+		<AddInId>
+			C4EEB14A-E191-466F-BA9C-81E01B0CA88E
+		</AddInId>
+		<FullClassName>RevitLink.ApplyHalftone</FullClassName>
+		<Text>Half tone</Text>
 		<Description>Get Column From Revit</Description>
 		<VendorId>ITI</VendorId>
 		<VendorDescription>@ITI</VendorDescription>

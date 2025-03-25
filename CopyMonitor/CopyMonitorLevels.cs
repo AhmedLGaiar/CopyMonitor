@@ -2,7 +2,7 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace CopyMonitor
+namespace RevitLink
 {
     [Transaction(TransactionMode.Manual)]
     public class CopyMonitorLevels : IExternalCommand
@@ -23,47 +23,46 @@ namespace CopyMonitor
                     return Result.Failed;
                 }
 
-                foreach (var linkInstance in linkInstances)
+                using (Transaction tx = new Transaction(doc, "Copy Monitor Levels"))
                 {
-                    Document linkedDoc = linkInstance.GetLinkDocument();
 
-                    List<Level> linkedLevels = new FilteredElementCollector(linkedDoc).OfClass(typeof(Level))
-                                                                        .Cast<Level>().ToList();
-                    if (!linkedLevels.Any())
+                    foreach (var linkInstance in linkInstances)
                     {
-                        TaskDialog.Show("Error", "No levels found in the linked model.");
-                        return Result.Failed;
-                    }
+                        Document linkedDoc = linkInstance.GetLinkDocument();
 
-                    using (Transaction tx = new Transaction(doc, "Copy Monitor Levels"))
-                    {
-                        tx.Start();
-
-                        foreach (var linkedLevel in linkedLevels)
+                        List<Level> linkedLevels = new FilteredElementCollector(linkedDoc).OfClass(typeof(Level))
+                                                                            .Cast<Level>().ToList();
+                        if (!linkedLevels.Any())
                         {
-                            OverrideGraphicSettings overrideGraphic= new OverrideGraphicSettings();
-                            overrideGraphic.SetHalftone(true);
-
-                            string linkedLevelName = linkedLevel.Name;
-                            double linkedElevation = linkedLevel.Elevation;
-
-                            // Create a new level
-                            Level newLevel = Level.Create(doc, linkedElevation);
-                            newLevel.Name = linkedLevelName;
-
-                            TaskDialog.Show("Level Created", $"New Level: {linkedLevelName} at {linkedElevation} ft");
-
-                            // Create associated floor and ceiling plans
-                            CreatePlanViews(doc, newLevel);
-
+                            TaskDialog.Show("Error", "No levels found in the linked model.");
+                            return Result.Failed;
                         }
 
-                        tx.Commit();
+                        {
+                            tx.Start();
+
+                            foreach (var linkedLevel in linkedLevels)
+                            {
+
+                                string linkedLevelName = linkedLevel.Name;
+                                double linkedElevation = linkedLevel.Elevation;
+
+                                // Create a new level
+                                Level newLevel = Level.Create(doc, linkedElevation);
+                                newLevel.Name = linkedLevelName;
+
+                                TaskDialog.Show("Level Created", $"New Level: {linkedLevelName} at {linkedElevation} ft");
+
+                                // Create associated floor and ceiling plans
+                                CreatePlanViews(doc, newLevel);
+
+                            }
+                            tx.Commit();
+                        }
+
                     }
-
+                    return Result.Succeeded;
                 }
-
-                return Result.Succeeded;
             }
             catch (Exception ex)
             {
