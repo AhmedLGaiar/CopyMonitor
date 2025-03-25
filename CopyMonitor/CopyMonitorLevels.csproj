@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <ApplicationManifest>app.addin</ApplicationManifest>
+    <ApplicationManifest>CopyMonitorLevels.addin</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,5 +23,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="Copy &quot;$(TargetDir)&quot;.&quot;&quot; &quot;$(AppData)\Autodesk\Revit\Addins\2025\&quot;" />
+  </Target>
 
 </Project>
