@@ -8,14 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="RevitAPI">
-      <HintPath>..\..\..\..\Program Files\Autodesk\Revit 2025\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI">
-      <HintPath>..\..\..\..\Program Files\Autodesk\Revit 2025\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <PackageReference Include="Revit_All_Main_Versions_API_x64" PrivateAssets="All"  Version="2025.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,7 +18,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="Copy &quot;$(TargetDir)&quot;.&quot;&quot; &quot;$(AppData)\Autodesk\Revit\Addins\2025\&quot;" />
+    <Exec Command="Copy &quot;$(TargetDir)&quot;.&quot;&quot; &quot;$(AppData)\Autodesk\Revit\Addins\2025\&quot;&#xD;&#xA;Copy &quot;$(TargetDir)&quot;.&quot;&quot; &quot;$(AppData)\Autodesk\Revit\Addins\2022\&quot;" />
   </Target>
 
 </Project>
